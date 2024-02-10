@@ -1,5 +1,5 @@
 # Welcome to my Portfolio
-## Projects in order of completion:
+## Projects in Order of Completion
 
 Wine Quality: regression and classification
 
