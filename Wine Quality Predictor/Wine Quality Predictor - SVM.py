@@ -206,9 +206,11 @@ params = {'C': [.1, 1, 10], 'gamma': [10, 1, .01, .001], 'kernel': ['rbf']}
 
 # Red Wine SVM
 svm_w_grid(params, RTX_train, rty_train, RTX_test, "Red Wine")
+# Best parameters from GridSearch, C=1, gamma=1
 evaluate_model(rty_test, rty_train, training_svm_preds, testing_svm_preds,"Red Wine")
 # White Wine SVM
 svm_w_grid(params, WTX_train, wty_train, WTX_test, "White Wine")
+# Best parameters from GridSearch, C=1, gamma=10
 evaluate_model(wty_test, wty_train, training_svm_preds, testing_svm_preds, "White Wine")
 
 # 7) Model Assessments
@@ -219,8 +221,8 @@ components at best increased the testing accuracy by 6.6%, but increased the ove
 increasing the included variance. 
 """
 """White Wine Model:
-Best Overall Model: 5 PC's (74.9% variance), 90.3% testing accuracy, 99.6% training accuracy. 9.3% difference between 
-the two, but it was the lowest difference for all #'s of PC's and at relatively high accuracy, this moderate overfitting
+Best Overall: 5 PC's (74.9% variance), 90.3% testing accuracy, 99.6% training accuracy. 9.3% difference between 
+the two, but it was the lowest difference for all #'s of PC's, and at relatively high accuracy, this moderate overfitting
 was accepted. This model also has exceptional recall of 97.1%, so if it were to suggest a wine would be "bad", it would 
 not often be wrong"""
 
@@ -235,7 +237,7 @@ observations."""
 
 
 # 8) Conclusions
-"""While the Red Wine model leaves much to be desired, the White Wine model seems to have potential to accurately
+"""While the Red Wine model leaves much to be desired, the White Wine model seems to have the potential to accurately
 classify wines as good or bad, based on the physicochemical properties included in this study. 
 
 To improve both models, increasing the number of samples would be the first suggestion. More high-quality data can only 
