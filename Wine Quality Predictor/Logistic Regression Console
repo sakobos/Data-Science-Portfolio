@@ -1,0 +1,36 @@
+# Console from Logistic Regression
+# Will not include data cleaning/feature engineering. Will only include from PCA down
+
+Red Wine PCA Explained Variance Ratio:
+[0.31857499 0.21108466 0.15565414 0.08113015]
+Red Wine PCA Total Variance:
+0.7664439355682601
+
+White Wine PCA Explained Variance Ratio:
+[0.36707048 0.12217042 0.10204794 0.09531203 0.08429814 0.0745554 ]
+White Wine PCA Total Variance:
+0.8454544016443077
+
+Red Wine Training Accuracy: 0.7059471365638766
+Red Wine Testing Accuracy: 0.75
+Red Wine Testing Precision: 0.7383177570093458
+Red Wine Testing Recall: 0.7314814814814815
+Red Wine Testing F1: 0.7348837209302326
+Training Confusion Matrix:
+[[344 104]
+ [163 297]]
+Testing Confusion Matrix:
+[[92 28]
+ [29 79]]
+
+White Wine Training Accuracy: 0.7177914110429447
+White Wine Testing Accuracy: 0.7269938650306749
+White Wine Testing Precision: 0.7193347193347194
+White Wine Testing Recall: 0.7238493723849372
+White Wine Testing F1: 0.721584984358707
+Training Confusion Matrix:
+[[1410  535]
+ [ 569 1398]]
+Testing Confusion Matrix:
+[[365 135]
+ [132 346]]
