@@ -1,7 +1,7 @@
 # Welcome to my Portfolio
 ## Projects in Order of Completion
 
-Wine Quality: regression and classification
+Wine Quality: rclassification
 
 Diabetes Readmission: classification
 
