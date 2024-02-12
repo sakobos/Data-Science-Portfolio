@@ -1,7 +1,9 @@
 # Welcome to my Portfolio
 ## Projects in Order of Completion
 
-Wine Quality: rclassification
+Multifactor Analysis of Pitch Design (College Capstone): regression
+
+Wine Quality: classification
 
 Diabetes Readmission: classification
 
