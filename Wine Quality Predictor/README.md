@@ -23,12 +23,11 @@
 While the Red Wine model leaves much to be desired, the White Wine model seems to have the potential to accurately classify wines as good or bad, based on the physicochemical properties included in this study. <br> 
 
 Red Wine Model: <br>
-Best Overall: 2 principal components that account for 46% of the variance, 70.2% testing accuracy, 73.5% training accuracy. 3.3% difference between the two, so there is some slight overfitting but not too bad. Increasing the number of principal components at best increased the testing accuracy by 6.6%, but increased the overfitting by almost 10%, not worth increasing the included variance. <br>
+Best Overall: 2 principal components that account for 46% of the variance, 71.6% testing accuracy, 70.0% training accuracy. 1.6% difference between the two, so there is some slight underfitting but not too bad. Increasing the number of principal components at best increased the testing accuracy by 6.7%, but led to training accuracy of 98.7%, grossly overfitting and not worth increasing the included variance. <br>
 <br>
 White Wine Model: <br>
-Best Overall: 5 principal components that account for 74.9% of the variance, 90.3% testing accuracy, 99.6% training accuracy. 9.3% difference between 
-the two, but it was the lowest difference for all #'s of PCs, and at relatively high accuracy, this moderate overfitting was accepted. This model also has an exceptional recall of 97.1%, so if it were to suggest a wine would be "bad", it would  not often be wrong <br>
-<br>
+Best Overall: 6 principal components that account for 82.1% of the variance, 90.0% testing accuracy, 99.8% training accuracy. 9.8% difference between 
+the two, but it was the lowest difference for all #'s of PCs, and at relatively high accuracy, this moderate overfitting was accepted as the best option. Increasing the number of principal components led to little change in training or testing accuracy while decreasing the number of principal components dropped testing accuracy by as much as 10% with a little as a 2.0% decrease in training accuracy. This model also has an exceptional recall of 99.0%, so if it were to suggest a wine would be "bad", it would  not often be wrong <br>
 
 ## Logistic Regression
 Both models fail to impress in terms of accuracy, however, compared to the Support Vector Machine model, the Red Wine Logistic Regression model was able to improve by almost 5%. Some credit for that may be due to the decision to normalize the data instead of standardizing, along with the use of a different algorithm. <br>
