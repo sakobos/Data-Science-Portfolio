@@ -34,6 +34,7 @@ Both models fail to impress in terms of accuracy, however, compared to the Suppo
 
 Red Wine Model:<br>
 Best Overall: 4 principal components that account for 68.5% of the variance, 75% testing accuracy, 70.6% training accuracy. <br>
+<br>
 White Wine Model:<br>
 Best Overall: 6 principal components that account for 84.5% of the variance, 72.7% testing accuracy, 71.8% training accuracy.
 
