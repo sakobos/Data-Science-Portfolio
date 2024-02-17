@@ -4,11 +4,9 @@
   The differences are as follows:
 
   ## SVM <br>
-  - uses standardization with StandardScaler() from Scikitlearn <br>
   - PCA num_components are 2 for Red Wine and 6 for White Wine
 
   ## Logistic Regression <br>
-  - uses normalization with MinMaxScaler() from Scikitlearn
   - PCA num_components are Red-4, White-6
   
   ## Linear Regression <br>
