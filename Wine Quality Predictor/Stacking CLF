@@ -63,7 +63,7 @@ print(f"Shape of White w/o Duplicates: {white.shape}")
 
 
 # 4) Data Preprocessing
-# First step in preprocessing will be to remove outliers, as SVM is sensitive since it uses distance calculations
+# First step in preprocessing will be to remove outliers
 def no_outliers(data):
     z_scores = stats.zscore(data)
     threshold = 3
