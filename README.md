@@ -7,4 +7,6 @@ Wine Quality: classification
 
 Diabetes Readmission: classification
 
+Pokemon GAN: image generation
+
 Thank you for stopping by
