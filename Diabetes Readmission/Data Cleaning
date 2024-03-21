@@ -1,6 +1,6 @@
 # 1) Importing Libraries
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
