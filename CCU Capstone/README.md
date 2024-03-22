@@ -13,3 +13,5 @@ There was no statistically significant relationship found between the 4 chosen f
 
 ## Analysis <br>
 There are many other avenues to explore from the data that might be able to provide better results. The data was originally broken up into 4 groups, 4_seam fastballs from left-handed pitchers, $-seam fastballs from right-handed pitchers, 2-seam fastballs from left-handed pitchers, and 2-seam fastballs from right-handed pitchers. The most logical progression from this would be to separate the data by the individual pitcher, as each pitcher throws in their own unique way that may make their pitches behave/perform differently than another pitcher of the same handedness. Many other measurements can be taken into account as well, such as pitch speed, location, extension, and many more that could all potentially explain the effectiveness of a pitcher's offering. 
+
+## Copies of the Paper (.docx) and PowerPoint (.ppt) have been included and can be downloaded to view. Will get them uploaded as .pdf as well in the near future.
