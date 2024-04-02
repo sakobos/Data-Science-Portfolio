@@ -16,4 +16,6 @@ The first attempt to remedy the generation issue was to focus on creating images
 That did not help the GAN so other avenues will be explored: <br>
 - altering the structure of the GAN (specifically the generator).
 - performing more transformations on the single Pokemon set to have more images to work with (potentially implement Differential Augmentation)
-- could reintroduce the entire set of images and implement the same transformations on all 151 Pokemon species to have a significantly larger quantity of images for the generator to learn from. 
+- could reintroduce the entire set of images and implement the same transformations on all 151 Pokemon species to have a significantly larger quantity of images for the generator to learn from. <br>
+
+I do plan on moving the GAN over to my GPU.
