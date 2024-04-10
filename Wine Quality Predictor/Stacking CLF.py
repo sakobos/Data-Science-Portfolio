@@ -123,7 +123,7 @@ print(wy_train.value_counts().sort_index())
 # Red Wine has a slight imbalance (458/528) 46%/54% 0/1
 # White Wine has a significant imbalance (952/1950) 32%/68% 0/1
 
-# Upsample both training datasets with SMOTE to balance out the target classes in the training data
+# Upsample Red training dataset with SMOTE to balance out the target classes
 red_upsample = SMOTE()
 RX_upsample, ry_upsample = red_upsample.fit_resample(RX_train, ry_train)
 print("\nRed Upsampled Class Distribution:")
