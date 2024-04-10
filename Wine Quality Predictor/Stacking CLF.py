@@ -63,27 +63,8 @@ print(f"Shape of White w/o Duplicates: {white.shape}")
 
 
 # 4) Data Preprocessing
-# First step in preprocessing will be to remove outliers
-def no_outliers(data):
-    z_scores = stats.zscore(data)
-    threshold = 3
-    outliers = (abs(z_scores) > threshold).any(axis=1)
-    return outliers
-
-
-red = red[~no_outliers(red)]
-
-white = white[~no_outliers(white)]
-
-print(f"\nRed (No Outliers) Data Description:")
-print(red.describe())
-print(f"\nWhite (No Outliers) Data Description:")
-print(white.describe())
-# Trimmed data frames have shapes (1232, 12) and (3620, 12) for red and white
-
-
-# Second step of preprocessing is to change that target variable to a binary outcome
-# A quality grade of 5 or below will be bad, 0. A quality grade of 6 or higher will be good, 1.
+# First step of preprocessing is to change that target variable to a binary outcome
+# A quality grade of 5 or below will be "bad", 0. A quality grade of 6 or higher will be "good", 1.
 # Binary outcome is required due to low class count for quality grades other than 5 and 6.
 def change_quality(quality):
     if quality >= 6:
@@ -95,64 +76,77 @@ def change_quality(quality):
 # Applying Quality Change to DFs
 red['quality'] = red['quality'].apply(change_quality)
 white['quality'] = white['quality'].apply(change_quality)
-# Re-exploring quality distribution for each wine to check for imbalance.
-print(f"\nRed Quality Grade Counts:")
-print(red['quality'].value_counts().sort_index())
-print(f"\nWhite Quality Grade Counts:")
-print(white['quality'].value_counts().sort_index())
-# Red Wine has a slight imbalance 46%/54% 0/1
-# White Wine has a significant imbalance 32%/68% 0/1
-# Both datasets will require resampling to balance out the target classes
-
-# Third step of preprocessing will be the resample the target classes
-# Red Wine we will downsample the majority class since it is close, won't have to worry about losing too much info
-# Splitting Red Wine dataset into class 0 and class 1 sets
-red0 = red[red['quality'] == 0]
-red1 = red[red['quality'] == 1]
-red1_downsample = resample(red1, replace=True, n_samples=len(red0), random_state=42)
-print(f"\nShape of Red 0: {red0.shape}")
-print(f"Shape of Old Red 1: {red1.shape}")
-print(f"Shape of New Red 1: {red1_downsample.shape}")
-# Shapes match at (572, 12)
-red_resampled = pd.concat([red0, red1_downsample])
-print(f"Shape of Red Resampled: {red_resampled.shape}")
-# Shape of Red Resampled (1144, 12) as expected
 
 
-# White Wine we will upsample minority class, as downsampling majority will lose a significant amount of observations
-# Splitting White Wine dataset into class 0 and class 1 sets
-white0 = white[white['quality'] == 0]
-white1 = white[white['quality'] == 1]
-white0_upsample = resample(white0, replace=True, n_samples=len(white1), random_state=42)
-print(f"\nShape of White 1: {white1.shape}")
-print(f"Shape of Old White 0: {white0.shape}")
-print(f"Shape of New White 0: {white0_upsample.shape}")
-# Shapes match at (2450, 12)
-white_resampled = pd.concat([white0_upsample, white1])
-print(f"Shape of White Resampled: {white_resampled.shape}")
-# Shape of White Resampled (4900, 12) as expected
+# Second step of preprocessing will be to split the data into training and testing sets
+# Red Wine TTS
+RX = red.drop('quality', axis=1)
+RY = red['quality']
+RX_train, RX_test, ry_train, ry_test = train_test_split(RX, RY, test_size=.2, random_state=18)
+# White Wine TTS
+WX = white.drop('quality', axis=1)
+WY = white['quality']
+WX_train, WX_test, wy_train, wy_test = train_test_split(WX, WY, test_size=.2, stratify=WY, random_state=18)
 
 
-# Fourth step of preprocessing is standardizing the features
-red_features = red_resampled.drop('quality', axis=1)
-white_features = white_resampled.drop('quality', axis=1)
-# Scaling feature columns
-scaler = StandardScaler()
-red_stand = scaler.fit_transform(red_features)
-white_stand = scaler.fit_transform(white_features)
-red_stand = pd.DataFrame(red_stand)
-white_stand = pd.DataFrame(white_stand)
-print("\nRed Wine Standardized Data Description:")
-print(red_stand.describe())
-print("\nWhite Standardized Data Description:")
-print(white_stand.describe())
+# Third step in preprocessing will be to remove outliers from the training data
+def no_outliers(data):
+    z_scores = stats.zscore(data)
+    threshold = 3
+    outliers = (abs(z_scores) > threshold).any(axis=1)
+    return outliers
 
 
-# Fifth step of preprocessing is Principal Component Analysis (PCA) for dimensionality reduction
+# Dropping outlier indexes from both X and y train
+ry_train = ry_train[~no_outliers(RX_train)]
+RX_train = RX_train[~no_outliers(RX_train)]
+
+wy_train = wy_train[~no_outliers(WX_train)]
+WX_train = WX_train[~no_outliers(WX_train)]
+
+
+print(f"\nRed Training (No Outliers) Feature Description:")
+print(RX_train.describe())
+print(f"\nWhite Training (No Outliers) Feature Description:")
+print(WX_train.describe())
+# Trimmed data frames have shapes (986, 11) and (2902, 11) for red and white
+# checking that Target Training data shapes match their corresponding Feature Training data shapes
+print(f"\nShape of Red Training: {RX_train.shape}, {ry_train.shape}")
+print(f"Shape of Red Training: {WX_train.shape}, {wy_train.shape}")
+
+
+# Fourth step of preprocessing will be to re-explore quality distribution for each wine to check for imbalance.
+print(f"\nRed Training Data Quality Grade Counts:")
+print(ry_train.value_counts().sort_index())
+print(f"\nWhite Training Data Quality Grade Counts:")
+print(wy_train.value_counts().sort_index())
+# Red Wine has a slight imbalance (458/528) 46%/54% 0/1
+# White Wine has a significant imbalance (952/1950) 32%/68% 0/1
+
+# Upsample both training datasets with SMOTE to balance out the target classes in the training data
+red_upsample = SMOTE()
+RX_upsample, ry_upsample = red_upsample.fit_resample(RX_train, ry_train)
+print("\nRed Upsampled Class Distribution:")
+print(pd.Series(ry_upsample).value_counts())
+# classes balanced as expected to 528 each
+
+# Opted to not balance White Wine classes, used Stratified Sampling instead
+
+# Fifth step of preprocessing is scaling the training data
+red_scaler = StandardScaler()
+red_scaler.fit(RX_upsample)
+RX_upsample_scaled = red_scaler.transform(RX_upsample)
+white_scaler = StandardScaler()
+white_scaler.fit(WX_train)
+WX_upsample_scaled = white_scaler.transform(WX_train)
+
+# Sixth step of preprocessing is applying PCA to the features of each training dataset
+# will shoot for retaining ~90% of variance
 # Red Wine PCA
-red_p = red_stand
-r_pca = PCA(n_components=5)
-red_pca = r_pca.fit(red_p).transform(red_p)
+red_p = RX_upsample_scaled
+r_pca = PCA(n_components=7)
+r_pca.fit(red_p)
+red_pca = r_pca.transform(red_p)
 red_pca = pd.DataFrame(red_pca)
 print("\nRed Wine Data Post-PCA:")
 print(red_pca.describe())
@@ -160,11 +154,13 @@ print(f"\nRed Wine PCA Explained Variance Ratio:")
 print(r_pca.explained_variance_ratio_)
 print("Red Wine PCA Total Variance:")
 print(r_pca.explained_variance_ratio_.sum())
-# 2 components retains 46.0% of the variance
+# 7 components retains 91.0% of the variance
+
 # White Wine PCA
-white_p = white_stand
-w_pca = PCA(n_components=8)
-white_pca = w_pca.fit(white_p).transform(white_p)
+white_p = WX_upsample_scaled
+w_pca = PCA(n_components=7)
+w_pca.fit(white_p)
+white_pca = w_pca.transform(white_p)
 white_pca = pd.DataFrame(white_pca)
 print("\nWhite Wine Data Post-PCA:")
 print(white_pca.describe())
@@ -172,14 +168,14 @@ print(f"\nWhite Wine PCA Explained Variance Ratio:")
 print(w_pca.explained_variance_ratio_)
 print("White Wine PCA Total Variance:")
 print(w_pca.explained_variance_ratio_.sum())
-# 6 components retains 82.2% of the variance
+# 7 components retains 88.3% of the variance
 
 # Ranking features by their contribution to the PCA
-# The higher the loading, the more information it contributed to the PCA, the more valuable the feature is
+# The higher the loading, the more information it contributed to the PCA, the more "valuable" the feature is
 # Access the loading scores for Red Wine
 red_loading_scores = r_pca.components_
 feature_names = red.columns
-# Sum up the absolute loading scores across all components for each feature
+# Sum up the absolute loading scores across all components for each feature and calculate percentages
 red_total_loading_scores = np.sum(np.abs(red_loading_scores), axis=0)
 red_total_loading_sum = np.sum(red_total_loading_scores)
 red_percentage_loading_scores = (red_total_loading_scores / red_total_loading_sum) * 100
@@ -211,16 +207,15 @@ for feature_index in white_ranked_features_indices:
     percentage = white_percentage_loading_scores[feature_index]
     print(f"{feature_name.ljust(25)} {score:.4f}".ljust(10), f"{percentage:.2f}%".rjust(22))
 
-# Final step of preprocessing is splitting the data into training and testing sets
-# Red Wine TTS
-RTX = red_pca
-RTY = red_resampled['quality']
-RTX_train, RTX_test, rty_train, rty_test = train_test_split(RTX, RTY, test_size=.2, random_state=18)
-# White Wine TTS
-WTX = white_pca
-WTY = white_resampled['quality']
-WTX_train, WTX_test, wty_train, wty_test = train_test_split(WTX, WTY, test_size=.2, random_state=18)
-
+# Seventh and final step of preprocessing is applying the scaling and PCA fits from training sets onto testing sets
+# Red Wine Test Scaling
+RX_test_scaled = red_scaler.transform(RX_test)
+# Red Wine Test PCA
+red_test_pca = r_pca.transform(RX_test_scaled)
+# White Wine Test Scaling
+WX_test_scaled = white_scaler.transform(WX_test)
+# Red Wine Test PCA
+white_test_pca = w_pca.transform(WX_test_scaled)
 
 # 5) Modeling
 # Creating functions to be able to call these models twice (once for each dataset)
@@ -305,24 +300,22 @@ def evaluate_model(y_test, y_train, training_preds, testing_preds, name):
     print("Testing Confusion Matrix:")
     print(testing_cf)
 
-
 # Parameters for GridSearch
-svm_params = {'C': [.1, 1, 10], 'gamma': [10, 1, .01, .001], 'kernel': ['rbf']}
-knn_params = {'n_neighbors': np.arange(1, 40).tolist(), 'weights': ['uniform', 'distance'],
-              'algorithm': ['ball_tree', 'kd_tree', 'brute']}
-log_params = {'penalty': ['l1', 'l2', 'elasticnet'], 'C': [1, 2, 3, 4],
-              'solver': ['lbfgs', 'liblinear', 'newton-cg', 'sag', 'saga']}
+svm_params = {'C': [.01, .1, 1,]}
+knn_params = {'n_neighbors': np.arange(10, 20).tolist()}
+log_params = {'penalty': ['l2'], 'C': [.01, .1, 1, 10],
+              'solver': ['lbfgs']}
 
 
 # Estimators for StackingClassifier
 red_estimators = [
-    ("svm", SVC(C=10, gamma=.01)),
-    ("knn", KNeighborsClassifier(n_neighbors=28)),
-    ("log", LogisticRegression(max_iter=2000, penalty='l1', C=1, solver='liblinear'))]
+    ("svm", SVC(C=.1)),
+    ("knn", KNeighborsClassifier(n_neighbors=18)),
+    ("log", LogisticRegression(max_iter=2000, penalty='l2', C=.01, solver='lbfgs'))]
 white_estimators = [
-    ("svm", SVC(C=1, gamma=10)),
-    ("knn", KNeighborsClassifier(n_neighbors=22)),
-    ("log", LogisticRegression(max_iter=2000, penalty='l1', C=2, solver='liblinear'))]
+    ("svm", SVC(C=.1)),
+    ("knn", KNeighborsClassifier(n_neighbors=20)),
+    ("log", LogisticRegression(max_iter=2000, penalty='l2', C=.01, solver='lbfgs'))]
 
 
 # Calling Modeling and Evaluation functions
