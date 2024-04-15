@@ -17,4 +17,4 @@ Random Forest Classifier accuracy: 64.0%
 <be>
 ## Analysis <br>
 The model leaves much to be desired from a performance standpoint, which is unsurprising given the quality of the dataset. <br>
-What could be one of the more important factors in the lack of predictive power of the model(s) would be the removal of two features, weight, and max_glu_serum (blood glucose level), due to the heavy presence of null values throughout the set. In diabetic patients, I believe their weight and the current state of their blood sugars would provide beneficial information on their likelihood of readmission, as both are key metrics in evaluating the management of their disease. 
+What could potentially be one of the more important factors in the lack of predictive power of the model(s) would be the removal of two features, weight, and max_glu_serum (blood glucose level), due to the heavy presence of null values throughout the set. In diabetic patients, I believe their weight and the current state of their blood sugars would provide beneficial information on their likelihood of readmission, as both are key metrics in evaluating the management of their disease. 
